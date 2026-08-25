@@ -56,6 +56,22 @@ class LnkdList {
         }
         return null;
     }
+    
+    public void remove(int n){
+        Student current = this.head;
+        if (current == null || n < 0){
+            return;
+        }
+        int indx = 0;
+        while (current != null && indx < (n-1)){
+            current = current.next;
+            indx++;
+        }
+        if(current == null || current.next == null){
+            return;
+        } 
+        current.next = current.next.next;
+    }
 }
 
 
@@ -76,6 +92,9 @@ public class PruebaLinkedList {
         if (notfound != null){
             System.out.println("Found: " + notfound.name + "score: " + notfound.score);
         }
+        
+        lista.remove(1);
+        lista.print();
     }
     
 }
