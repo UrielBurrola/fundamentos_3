@@ -45,6 +45,17 @@ class LnkdList {
             current = current.next;
         } 
     }
+    
+    public Student retrieve(String searched){
+        Student current = this.head;
+        while(current != null){
+            if (current.name.equals(searched)){
+                return current;
+            } 
+            current = current.next; 
+        }
+        return null;
+    }
 }
 
 
@@ -57,6 +68,14 @@ public class PruebaLinkedList {
         System.out.println("agregados.");
         
         lista.print();
+        
+        Student found = lista.retrieve("Airam");
+        System.out.println("Found: " + found.name + "score: " + found.score);
+        
+        Student notfound = lista.retrieve("Alguien");
+        if (notfound != null){
+            System.out.println("Found: " + notfound.name + "score: " + notfound.score);
+        }
     }
     
 }
