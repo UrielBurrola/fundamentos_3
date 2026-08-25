@@ -36,6 +36,7 @@ class LnkdList {
             current.next = newStudent;
         }
     }
+    //This is a prueba
     
     public void print(){
         Student current = this.head;
