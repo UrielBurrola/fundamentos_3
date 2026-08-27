@@ -19,21 +19,25 @@ class Student{
 class LnkdList {
     
     Student head;
+    int index;
     
     public LnkdList(){
         this.head = null;
+        this.index = 0;
     }
     
     public void add(String name, int score){
         Student newStudent = new Student(name,score);
         if (head == null){
             head = newStudent;
+            this.index++;
         } else {
             Student current = head;
             while (current.next != null){
                 current = current.next;
             }
             current.next = newStudent;
+            index++;
         }
     }
     //This is a prueba
@@ -59,7 +63,12 @@ class LnkdList {
     
     public void remove(int n){
         Student current = this.head;
+        
         if (current == null || n < 0){
+            return;
+        }
+        if (n >= this.index){
+            System.out.println("No wey");
             return;
         }
         int indx = 0;
@@ -71,6 +80,7 @@ class LnkdList {
             return;
         } 
         current.next = current.next.next;
+        this.index--;
     }
 }
 
@@ -93,8 +103,14 @@ public class PruebaLinkedList {
             System.out.println("Found: " + notfound.name + "score: " + notfound.score);
         }
         
-        lista.remove(1);
+        lista.remove(2);
         lista.print();
+        
+        System.out.println("After delete Alfedo");
+        
+        lista.remove(2);
+        lista.print();
+           
     }
     
 }
