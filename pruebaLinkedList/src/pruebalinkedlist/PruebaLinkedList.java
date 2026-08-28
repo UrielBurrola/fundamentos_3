@@ -19,28 +19,27 @@ class Student{
 class LnkdList {
     
     Student head;
+    Student tail;
     int index;
     
     public LnkdList(){
         this.head = null;
+        this.tail = null;
         this.index = 0;
     }
     
     public void add(String name, int score){
         Student newStudent = new Student(name,score);
         if (head == null){
-            head = newStudent;
+            this.head = newStudent;
+            this.tail = newStudent;
             this.index++;
         } else {
-            Student current = head;
-            while (current.next != null){
-                current = current.next;
-            }
-            current.next = newStudent;
+            this.tail.next = newStudent;
+            this.tail = newStudent;
             index++;
         }
     }
-    //This is a prueba
     
     public void print(){
         Student current = this.head;
@@ -64,13 +63,27 @@ class LnkdList {
     public void remove(int n){
         Student current = this.head;
         
-        if (current == null || n < 0){
+        if (current == null || n < 0){ //Empty list y Negative Index
             return;
         }
-        if (n >= this.index){
-            System.out.println("No wey");
+        if (n >= this.index){ //Idex out of bounds
             return;
         }
+        if (n == 0){ //Remove head
+            this.head = this.head.next;
+            this.index--;
+            return;
+        }
+        if (n == this.index-1){//Remove tail
+            while(current.next != this.tail){
+                current = current.next;
+            }
+            current.next = null;
+            this.tail = current;
+            index--;
+            return;      
+        }
+        
         int indx = 0;
         while (current != null && indx < (n-1)){
             current = current.next;
@@ -88,10 +101,23 @@ class LnkdList {
 public class PruebaLinkedList {
     public static void main(String[] args) {
         LnkdList lista = new LnkdList();
-        lista.add("Airam",99);
+        
+        lista.remove(0);
+        
+        lista.add("Airam",90);
         lista.add("Sergio", 88);
         lista.add("Alfedo", 81);
+        lista.add("Luis", 100);
+        
         System.out.println("agregados.");
+        
+        lista.print();
+        
+        lista.remove(2);
+        
+        lista.remove(3);
+        
+        lista.remove(2);
         
         lista.print();
         
