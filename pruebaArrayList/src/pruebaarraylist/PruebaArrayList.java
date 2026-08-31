@@ -1,20 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package pruebaarraylist;
+import java.util.ArrayList;
 
-/**
- *
- * @author uriel
- */
 public class PruebaArrayList {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        ArrayList<String> personalities = new ArrayList<String>();
+        
+        personalities.add("Ada Lovelace");
+        personalities.add("Alan Turing");
+        personalities.add("Grace Hopper");
+        
+        String name = personalities.get(1);
+        System.out.println(name);
+        
+        System.out.println("The size of the array list is: " + personalities.size());
+        
+        personalities.set(1, "Margaret Hamilton");
+        System.out.println(personalities);
+        
     }
     
 }
