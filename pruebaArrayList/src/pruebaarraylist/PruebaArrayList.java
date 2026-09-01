@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class PruebaArrayList {
 
     public static void main(String[] args) {
-        ArrayList<String> personalities = new ArrayList<String>();
+        ArrayList<String> personalities = new ArrayList<>();
         
         personalities.add("Ada Lovelace");
         personalities.add("Alan Turing");
