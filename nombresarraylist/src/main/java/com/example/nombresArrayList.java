@@ -41,14 +41,30 @@ public class nombresArrayList {
 
     private static ArrayList<String> countUniqueNames(ArrayList<String> nameList) {
         ArrayList<String> uniqueNames = new ArrayList<>();
+        ArrayList<Integer> counts = new ArrayList<>();
+
         for (String name : nameList) {
             name = name.split(" ")[0];
             if (!uniqueNames.contains(name)) {
                 uniqueNames.add(name);
-            } else {
-                
             }
         }
+
+        int contador = 0;
+        for (String name : uniqueNames) {
+            for (String fullName : nameList) {
+                if (name.equals(fullName.split(" ")[0])) {
+                    contador++;
+                }
+            }
+            counts.add(contador);
+            contador = 0;
+        }
+
+        for (String name : uniqueNames) {
+            uniqueNames.set(uniqueNames.indexOf(name), name + " " + counts.get(uniqueNames.indexOf(name)));
+        }
+
         return uniqueNames;
     }
 
