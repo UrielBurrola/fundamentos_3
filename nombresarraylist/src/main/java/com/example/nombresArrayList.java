@@ -9,14 +9,49 @@ import java.util.stream.Stream;
 
 public class nombresArrayList {
 
+    public static class nameCount {
+        String name;
+        int count;
+
+        public nameCount(String name){
+            this.count = 1;
+            this.name = name;
+        }
+
+        public void incrementCount() {
+            this.count++;
+        }
+
+        public String getName(){
+            return this.name + " (" + this.count + ")";
+        }
+
+    }
+
     public static void main(String[] args) {
         Path filePath = Paths.get("C:\\Users\\uriel\\Documents\\Fundamentos_3\\fundamentos_3\\nombresarraylist\\listado.txt");
 
         ArrayList<String> nameList = readNamesFromFile(filePath.toString());
+        int FIRSTNAME = 0;
+        int FLASTNAME = 1;
+        int SLASTNAME = 2;
+
         printNames(nameList);
 
-        ArrayList<String> uniqueNames = countUniqueNames(nameList);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        ArrayList<String> uniqueNames = countNames(nameList, FIRSTNAME);
         printNames(uniqueNames);
+
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        ArrayList<String> uniqueFLNames = countNames(nameList, FLASTNAME);
+        printNames(uniqueFLNames);
+
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        ArrayList<String> uniqueSLNames = countNames(nameList, SLASTNAME);
+        printNames(uniqueSLNames);
     }
 
     private static void printNames(ArrayList<String> nameList) {
@@ -39,33 +74,31 @@ public class nombresArrayList {
         return names;
     }
 
-    private static ArrayList<String> countUniqueNames(ArrayList<String> nameList) {
-        ArrayList<String> uniqueNames = new ArrayList<>();
-        ArrayList<Integer> counts = new ArrayList<>();
+    private static ArrayList<String> countNames(ArrayList<String> nameList, int pos) {
+        ArrayList<nameCount> countedNames = new ArrayList<>();
 
-        for (String name : nameList) {
-            name = name.split(" ")[0];
-            if (!uniqueNames.contains(name)) {
-                uniqueNames.add(name);
-            }
-        }
-
-        int contador = 0;
-        for (String name : uniqueNames) {
-            for (String fullName : nameList) {
-                if (name.equals(fullName.split(" ")[0])) {
-                    contador++;
+        for (String name : nameList){
+            boolean found = false;
+            String[] splitName = name.split(" ");
+            for (nameCount nc : countedNames){
+                if(nc.name.equals(splitName[pos])){
+                    nc.incrementCount();
+                    found = true;
+                    break;
                 }
             }
-            counts.add(contador);
-            contador = 0;
+            if (!found){
+                countedNames.add(new nameCount(splitName[pos]));
+            }
         }
 
-        for (String name : uniqueNames) {
-            uniqueNames.set(uniqueNames.indexOf(name), name + " " + counts.get(uniqueNames.indexOf(name)));
+        ArrayList<String> result = new ArrayList<>();
+
+        for(nameCount nc : countedNames){
+            result.add(nc.getName());
         }
 
-        return uniqueNames;
+        return result;
     }
 
 }
