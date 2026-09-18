@@ -16,9 +16,9 @@ public class rover {
 
         Deque<String> stack = queueToStack(queue);
 
-        Queue<String> queueInvertido = stackToQueue(stack);
+        queue = stackToQueue(stack);
 
-        travelQueue(queueInvertido);
+        travelQueue(queue);
     }
 
     public static ArrayList<String> leerArchivo(String nombreArchivo) {
