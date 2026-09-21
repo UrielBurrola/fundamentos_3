@@ -7,6 +7,7 @@ import java.util.Stack;
 
 public class towerOfHanoi {
 
+    private static final char[] NOMBRES = {'A','B','C'};
     private static Scanner sc = new Scanner(System.in);
     private static int numeroDiscos = 3;
 
@@ -65,17 +66,44 @@ public class towerOfHanoi {
     private static void jugarManual() {
         inicializarTorres();
 
-        do {
+        while(numeroDiscos > torres[2].size()) {
             despliegaTorres();
-            System.out.println("Ingresa la torre a jugar: ");
-            String mensaje = sc.nextLine();
-            eligeTorre(mensaje);
 
-        } while(true);
+            String origen = eligeTorre("Elige la torre de Origen (A, B, C): ");
+            int torreOrigen = origen.charAt(0) - 'A';
+            if(torres[torreOrigen].isEmpty()){
+                System.out.println("La torre de origen esta vacio, intente de nuevo.");
+                continue;
+            }
+
+            String destino = eligeTorre("Elige la torre de Destino (A, B, C): ");
+            int torreDestino = destino.charAt(0) - 'A';
+
+            moverDisco(torreOrigen, torreDestino);
+
+        }
+
+        System.out.println(" ~~~ Ganaste ~~~");
     }
 
+    private static void moverDisco(int torreOrigen, int torreDestino) {
+        if (!torres[torreDestino].isEmpty()){
+            if(torres[torreOrigen].peek() > torres[torreDestino].peek()){
+                System.out.println("Moviemiento invalido, no se puede colocar un disco mas grande sobre uno mas pequeño");
+                return;
+            }
+        }
+        int disco = torres[torreOrigen].pop();
+        torres[torreDestino].push(disco);
+        System.out.println("Moviste el disco " + disco +
+                " de la torre " + (char)('A' + torreOrigen) +
+                " a la torre " + (char)('A' + torreDestino) + "." );
+    }
+
+    private static void solucion() {}
+
     private static String eligeTorre(String mensaje){
-        String torre = "";
+        String torre;
         do{
             System.out.println(mensaje);
             torre = sc.next().toUpperCase();
