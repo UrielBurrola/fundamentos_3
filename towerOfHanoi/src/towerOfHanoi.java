@@ -55,7 +55,6 @@ public class towerOfHanoi {
     }
 
     private static void despliegaTorre(int torre){
-        Object torresAux = torres[torre].clone();
         System.out.print("Torre " + (char)('A' + torre) + ": ");
         for (int disco : torres[torre]){
             System.out.print(disco + " ");
