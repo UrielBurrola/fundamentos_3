@@ -48,8 +48,37 @@ public class expedientepersonas {
             System.out.println("No hay suficientes registros en el archivo.");
         }
 
-        buscarVariasPersonasEnLista(personas, new String[]{"Alan Almada Andre","Isabel Domínguez Ochoa","Ernesto Ozuna Ramírez",
-                                                            "Ada Pino López","Bruno Díaz Hernández","Luis Caro Durazo"});
+        String[] nombresABuscar = {"Alan Aldama Andre", "Isabel Domínguez Ochoa", "Ernesto Ozuna Ramirez", "Ada Pino López", "Bruno Díaz Hernández","Luis Caro Durazo"};
+        buscarVariasPersonasEnLista(personas, nombresABuscar);
+        System.out.println("--------------------------------------------------");
+
+        // Crear un HashMap con los nombres como claves y las personas como valores
+        HashMap<String,Personas> mapaPersonas = new HashMap<>();
+        for (Personas persona : personas) {
+            mapaPersonas.put(persona.getNombre(), persona);
+        }
+        Personas personaEncontradaEnHashMap = buscarPersonaEnHashMap(mapaPersonas,"Alan Aldama Andre" );
+        buscarVariasPersonasEnHashMap(mapaPersonas, nombresABuscar);
+
+    }
+
+    public static Personas buscarPersonaEnHashMap(HashMap<String, Personas> mapaPersonas, String nombre) {
+        return mapaPersonas.get(nombre);
+    }
+
+    public static void buscarVariasPersonasEnHashMap(java.util.HashMap<String,Personas> mapaPersonas, String[] nombres) {
+        // Inicia un timer para medir el tiempo de búsqueda
+        long startTime = System.nanoTime();
+        for(String nombre: nombres){
+            Personas personaEncontrada = buscarPersonaEnHashMap(mapaPersonas, nombre);
+            if (personaEncontrada != null){
+                personaEncontrada.mostrarDatos();
+            } else {
+                System.out.println("No se encontro a la persona con nombre: " + nombre);
+            }
+        }
+        long endTime = System.nanoTime();
+        System.out.println("Tiempo de busqueda en HashMap: " + (endTime-startTime)/1000000.0 + " ms");
 
     }
 
@@ -104,11 +133,4 @@ public class expedientepersonas {
         return personas;
     }
 
-    public static HashMap<Integer,Personas> arrayToHashMap(ArrayList<Personas> personas) {
-        HashMap<Integer,Personas> hashMap = new HashMap<>();
-        for (Personas persona : personas) {
-            hashMap.put(persona.getNombre().hashCode(), persona);
-        }
-        return hashMap;
-    }
 }
