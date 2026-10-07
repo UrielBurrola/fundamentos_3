@@ -99,8 +99,6 @@ public class towerOfHanoi {
                 " a la torre " + (char)('A' + torreDestino) + "." );
     }
 
-    private static void solucion() {}
-
     private static String eligeTorre(String mensaje){
         String torre;
         do{
@@ -114,7 +112,20 @@ public class towerOfHanoi {
     }
 
     private static void mostrarSolucion() {
+        inicializarTorres();
+
+        Stack<Integer> pasos = new Stack<>();
+        int raiz = 0;
+        int auxiliar = 1;
+        int destino = 2;
+        boolean cuentaPasos = true;
+
+        while(numeroDiscos > torres[2].size()) {
+            despliegaTorres();
+
+        }
     }
+
 
     private static void elegirNumeroDiscos() {
         int sel = 0;

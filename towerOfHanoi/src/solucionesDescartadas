@@ -1,0 +1,59 @@
+Solo funciona para el primer caso
+        inicializarTorres();
+
+        int raiz = 0;
+        int destino = (numeroDiscos%2) +1;
+        int auxiliar = 3 - destino;
+
+        while(numeroDiscos > torres[2].size()) {
+            despliegaTorres();
+            if(torres[raiz].isEmpty()){
+                raiz = 0;
+                destino = (numeroDiscos%2) +1;
+                auxiliar = 3 - destino;
+                if (torres[raiz].isEmpty()){
+                    raiz = raiz + auxiliar;
+                    auxiliar = raiz - auxiliar;
+                    raiz = raiz - auxiliar;
+
+                    auxiliar = auxiliar + destino;
+                    destino = auxiliar - destino;
+                    auxiliar = auxiliar - destino;
+                }
+            }
+
+            // Intento de acomodo
+            if(!torres[destino].isEmpty()) {
+                if (torres[raiz].peek() < torres[destino].peek()) {
+                    moverDisco(raiz, destino);
+
+                    auxiliar = auxiliar + destino;
+                    destino = auxiliar - destino;
+                    auxiliar = auxiliar - destino;
+                } else {
+                    //Intercambio de raiz y destino
+                    raiz = raiz + destino;
+                    destino = raiz - destino;
+                    raiz = raiz - destino;
+
+                    //Intercambio de destino y auxiliar
+                    auxiliar = auxiliar + destino;
+                    destino = auxiliar - destino;
+                    auxiliar = auxiliar - destino;
+                }
+            } else{
+                moverDisco(raiz, destino);
+
+                auxiliar = auxiliar + destino;
+                destino = auxiliar - destino;
+                auxiliar = auxiliar - destino;
+            }
+            try {
+                // Pausa la ejecución por 1 segundo (1000 milisegundos)
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println("La pausa fue interrumpida");
+            }
+        }
+        despliegaTorres();
+        System.out.println(" ~~~ Solucionado ~~~");
