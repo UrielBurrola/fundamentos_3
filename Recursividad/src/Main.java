@@ -2,6 +2,67 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+class ArbolBinario{
+    private Nodo raiz;
+
+    public ArbolBinario(){
+        this.raiz = null;
+    }
+
+    public void insertar(int valor){
+        raiz = insertarRecursivo(raiz, valor);
+    }
+
+    private Nodo insertarRecursivo(Nodo nodo, int valor) {
+        if (nodo == null){
+            return new Nodo(valor);
+        }
+        if(valor < nodo.valor){
+            nodo.izquierda = insertarRecursivo(nodo.izquierda, valor);
+        } else if(valor > nodo.valor){
+            nodo.derecha = insertarRecursivo(nodo.derecha, valor);
+        }
+        return nodo;
+    }
+
+    public void preOrden(){
+        preOrddenRecursivo(raiz);
+    }
+
+    public void enOrden(){
+        enOrdenRecursivo(raiz);
+
+    }
+
+    private void enOrdenRecursivo(Nodo nodo) {
+        if (nodo != null){
+            enOrdenRecursivo(nodo.izquierda);
+            System.out.print(nodo.valor + " ");
+            enOrdenRecursivo(nodo.derecha);
+        }
+    }
+
+    private void preOrddenRecursivo(Nodo nodo) {
+        if (nodo != null){
+            System.out.print(nodo.valor + " ");
+            preOrddenRecursivo(nodo.izquierda);
+            preOrddenRecursivo(nodo.derecha);
+        }
+    }
+}
+
+class Nodo{
+    int valor;
+    Nodo izquierda;
+    Nodo derecha;
+
+    public Nodo(int valor){
+        this.valor = valor;
+        this.derecha = null;
+        this.izquierda = null;
+    }
+}
+
 public class Main {
 
     static void main(String[] args) {
@@ -31,9 +92,17 @@ public class Main {
 
          */}
         Scanner sc = new Scanner(System.in);
-        int[] arr = {22,21,22,23,24,25,26,27,28,29,30};
+        int[] arr = {20,21,22,23,24,25,26,27,28,29,30, 102, 55, 21, 7, 223, 56, 67};
+
         int indice = buscar(arr,30, 0,arr.length -1);
 
+        ArbolBinario arbol = new ArbolBinario();
+        for(int a: arr){
+            arbol.insertar(a);
+        }
+        arbol.preOrden();
+        System.out.println();
+        arbol.enOrden();
     }
 
     public static int buscar(int[] lista, int x, int ini, int fin){

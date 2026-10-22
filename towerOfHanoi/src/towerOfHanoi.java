@@ -113,17 +113,22 @@ public class towerOfHanoi {
 
     private static void mostrarSolucion() {
         inicializarTorres();
+        System.out.println("\nEstado inical:");
+        despliegaTorres();
+        resuelveHanoi(numeroDiscos, 0, 2, 1);
+        System.out.println("\n Resuelto");
+    }
 
-        Stack<Integer> pasos = new Stack<>();
-        int raiz = 0;
-        int auxiliar = 1;
-        int destino = 2;
-        boolean cuentaPasos = true;
-
-        while(numeroDiscos > torres[2].size()) {
-            despliegaTorres();
-
+    // Mueve n discos de origen a destino usando auxiliar, mostrando las torres tras cada movimiento
+    static void resuelveHanoi(int n, int origen, int destino, int auxiliar) {
+        if (n == 0) {
+            return;
         }
+        resuelveHanoi(n - 1, origen, auxiliar, destino);
+        moverDisco(origen, destino);
+        despliegaTorres();
+        System.out.println();
+        resuelveHanoi(n - 1, auxiliar, destino, origen);
     }
 
 

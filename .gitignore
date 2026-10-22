@@ -7,3 +7,5 @@
 /probos/nbproject/private/
 /probos/build/
 *.iml
+/.idea
+/out
