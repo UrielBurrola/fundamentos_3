@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 class GrafoArrays {
     private String[] vertices;
     private int numVertices;
@@ -6,6 +8,7 @@ class GrafoArrays {
     public GrafoArrays(String origen) {
         creaTablaVertices(origen);
         matrizAdyacencia = new int[numVertices][numVertices];
+        populateMatrizAdyacencia(origen);
     }
 
     private void creaTablaVertices(String origen) {
@@ -27,10 +30,6 @@ class GrafoArrays {
                 agregarVertice(extremos[1].trim());
             }
         }
-        // Crear método para agregar aristas después de crear la tabla de vértices populateMatrizAdyacencia(origen);
-        // Dividir el archivo de texto en lineas y procesar cada línea para agregar aristas
-        // Cada linea se separa en dos vértices y un peso, luego se llama al método agregarArista para agregarlas a la matriz de adyacencia
-        // Crear un método para desplegar la Matriz de adyacencia
     }
 
     private void agregarVertice(String vertice) {
@@ -43,7 +42,7 @@ class GrafoArrays {
         numVertices++;
     }
 
-    public void populateMatrizAdyacencia(String origen){
+    private void populateMatrizAdyacencia(String origen){
         String[] lineas = origen.split("\\R");
         String labelPeso = "";
         for (String vertice : vertices){
@@ -87,10 +86,10 @@ class GrafoArrays {
             System.out.print(vertices[i].substring(0,3)+ "  ");
         }
         System.out.println();
-        displayverticePonderado();
+        displayVerticePonderado();
     }
 
-    private void displayverticePonderado(){
+    private void displayVerticePonderado(){
         for (int i = 0; i < numVertices; i++) {
             System.out.print(vertices[i].substring(0,3)+ "  ");
             for(int j = 0; j < numVertices; j++){
@@ -118,6 +117,43 @@ class GrafoArrays {
             matrizAdyacencia[indice2][indice1] = peso; // Para grafos no dirigidos
         }
     }
+
+    public void DFS(String verticeInicial, String verticeFinal){
+        boolean[] visitado = new boolean[numVertices];
+        int indxInicial = obtenerIndiceVertice(verticeInicial);
+        int indxFinal = obtenerIndiceVertice(verticeFinal);
+        if(indxInicial == -1 || indxFinal == -1){
+            System.out.println("Uno o ambos vertices no exixten en el grafo.");
+            return;
+        }
+        System.out.println("Recorrido desde " + verticeInicial + " a " + verticeFinal);
+        Stack<Integer> stack = new Stack<>();
+        stack.push(indxInicial);
+
+        while(!stack.isEmpty()){
+
+            int indxActual = stack.pop();
+
+            if(!visitado[indxActual]){
+
+                visitado[indxActual] = true;
+                System.out.println(vertices[indxActual] + " ");
+
+                if (indxActual == indxFinal){
+
+                    System.out.println("\n Alcanzamos el vertice final.");
+                    return;
+
+                }
+            }
+            //Agregar Vecinos del indice actual
+            for(int i = 0; i < numVertices; i++){
+                if(matrizAdyacencia[indxActual][i] != 0 && !visitado[i]){
+                    stack.push(i);
+                }
+            }
+        }
+    }
 }
 
 
@@ -129,8 +165,9 @@ public class crearMatrizGrafo {
         System.out.println("Contenido del archivo:\n" + texto);
         GrafoArrays grafo = new GrafoArrays(texto);
         grafo.display();
-        grafo.populateMatrizAdyacencia(texto);
         grafo.displayMatrizAdyacencia();
+
+        grafo.DFS("Arcangel", "Lucia");
     }
 
     public static String cargaArchivo(String ruta) {
