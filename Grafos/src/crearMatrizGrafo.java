@@ -1,9 +1,12 @@
-import java.util.Stack;
+import java.lang.reflect.Array;
+import java.util.*;
 
 class GrafoArrays {
     private String[] vertices;
     private int numVertices;
     private int[][] matrizAdyacencia;
+    private Queue<String> arcosDFS = new ArrayDeque<>();
+    private Queue<String> arcosBFS = new ArrayDeque<>();
 
     public GrafoArrays(String origen) {
         creaTablaVertices(origen);
@@ -109,6 +112,7 @@ class GrafoArrays {
         }
         return -1;
     }
+
     private void agregarArista(String vertice1, String vertice2, int peso) {
         int indice1 = obtenerIndiceVertice(vertice1);
         int indice2 = obtenerIndiceVertice(vertice2);
@@ -118,15 +122,56 @@ class GrafoArrays {
         }
     }
 
+    public void BFS(String verticeInicial, String verticeFinal){
+        boolean[] visitado = new boolean[numVertices];
+        this.arcosBFS.clear();
+        int indxInicial = obtenerIndiceVertice(verticeInicial);
+        int indxFinal = obtenerIndiceVertice(verticeFinal);
+        if(indxInicial == -1 || indxFinal == -1){
+            System.out.println("Uno o ambos vertices no exixten en el grafo " + " con BFS:");
+            return;
+        }
+        System.out.println("Recorrido desde " + verticeInicial + " a " + verticeFinal + " con BFS:");
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(indxInicial);
+
+        while(!queue.isEmpty()){
+
+            int indxActual = queue.poll();
+
+            if(!visitado[indxActual]){
+
+                visitado[indxActual] = true;
+                this.arcosBFS.add(vertices[indxActual]);
+                System.out.println(vertices[indxActual] + " ");
+
+                if (indxActual == indxFinal){
+
+                    System.out.println("\n Alcanzamos el vertice final.");
+                    return;
+
+                }
+            }
+            //Agregar Vecinos del indice actual
+            for(int i = 0; i < numVertices; i++){
+                if(matrizAdyacencia[indxActual][i] != 0 && !visitado[i]){
+                    queue.add(i);
+                }
+            }
+        }
+
+    }
+
     public void DFS(String verticeInicial, String verticeFinal){
         boolean[] visitado = new boolean[numVertices];
+        this.arcosDFS.clear();
         int indxInicial = obtenerIndiceVertice(verticeInicial);
         int indxFinal = obtenerIndiceVertice(verticeFinal);
         if(indxInicial == -1 || indxFinal == -1){
             System.out.println("Uno o ambos vertices no exixten en el grafo.");
             return;
         }
-        System.out.println("Recorrido desde " + verticeInicial + " a " + verticeFinal);
+        System.out.println("Recorrido desde " + verticeInicial + " a " + verticeFinal + " con DFS:");
         Stack<Integer> stack = new Stack<>();
         stack.push(indxInicial);
 
@@ -137,6 +182,7 @@ class GrafoArrays {
             if(!visitado[indxActual]){
 
                 visitado[indxActual] = true;
+                this.arcosDFS.add(vertices[indxActual]);
                 System.out.println(vertices[indxActual] + " ");
 
                 if (indxActual == indxFinal){
@@ -154,6 +200,49 @@ class GrafoArrays {
             }
         }
     }
+
+    public void despliegaArcos(){
+        ArrayList<Queue<String>> pasos = new ArrayList<>();
+        int[] pasosPonderados = new int[2];
+        pasos.add(arcosBFS);
+        pasos.add(arcosDFS);
+
+        int arBfs = arcosBFS.size() - 1;
+        int verticesBfs = arcosBFS.size();
+
+        int arDfs = arcosDFS.size() - 1;
+        int verticesDfs = arcosDFS.size();
+
+        for(Queue<String> p : pasos){
+            System.out.println("Arcos para " + ((p == arcosBFS) ? "BFS":"DFS") + ":");
+            if (p.isEmpty()){
+                System.out.println("La lista de arcos esta vacia :(");
+                continue;
+            }
+
+            String vertcieIzq = p.poll();
+            while(!p.isEmpty()){
+
+                int pesoArco = matrizAdyacencia[obtenerIndiceVertice(vertcieIzq)][obtenerIndiceVertice(p.peek())];
+
+                pasosPonderados[pasos.indexOf(p)] += pesoArco;
+                System.out.printf("%s - %d - %s \n", vertcieIzq, pesoArco, p.peek());
+
+                vertcieIzq = p.poll();
+            }
+        }
+
+        System.out.println("Numero de arcos en DFS: " + arDfs);
+        System.out.println("Numero de arcos en BFS: " + arBfs);
+
+        System.out.printf("Busqueda mas optima: %s \n", ((arDfs < arBfs) ? "DFS":"BFS"));
+
+        System.out.println("Peso de arcos en DFS: " + pasosPonderados[0]);
+        System.out.println("Peso de arcos en BFS: " + pasosPonderados[1]);
+
+        System.out.printf("Busqueda mas optima: %s \n", ((pasosPonderados[0] < pasosPonderados[1]) ? "DFS":"BFS"));
+
+    }
 }
 
 
@@ -167,7 +256,10 @@ public class crearMatrizGrafo {
         grafo.display();
         grafo.displayMatrizAdyacencia();
 
-        grafo.DFS("Arcangel", "Lucia");
+        grafo.DFS("Luna", "Sergio");
+        grafo.BFS("Luna", "Sergio");
+
+        grafo.despliegaArcos();
     }
 
     public static String cargaArchivo(String ruta) {
