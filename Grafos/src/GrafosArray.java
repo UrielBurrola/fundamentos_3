@@ -1,14 +1,13 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
-class GrafoArrays {
+public class GrafosArray {
     private String[] vertices;
     private int numVertices;
     private int[][] matrizAdyacencia;
     private Queue<String> arcosDFS = new ArrayDeque<>();
     private Queue<String> arcosBFS = new ArrayDeque<>();
 
-    public GrafoArrays(String origen) {
+    public GrafosArray(String origen) {
         creaTablaVertices(origen);
         matrizAdyacencia = new int[numVertices][numVertices];
         populateMatrizAdyacencia(origen);
@@ -118,7 +117,7 @@ class GrafoArrays {
         int indice2 = obtenerIndiceVertice(vertice2);
         if (indice1 >= 0 && indice2 >= 0) {
             matrizAdyacencia[indice1][indice2] = peso;
-            matrizAdyacencia[indice2][indice1] = peso; // Para grafos no dirigidos
+            matrizAdyacencia[indice2][indice1] = peso; // Para Grafos no dirigidos
         }
     }
 
@@ -263,7 +262,7 @@ class GrafoArrays {
         for(int paso = 0; paso <= numVertices; paso++){
             int actual = -1;
             for(int i = 0; i < numVertices; i++){
-                if(!visitado[i] && distancia[i] != Integer.MAX_VALUE && (actual != -1 || distancia[i] < distancia[actual])){
+                if(!visitado[i] && distancia[i] != Integer.MAX_VALUE && (actual == -1 || distancia[i] < distancia[actual])){
                     actual = i;
                 }
                 if(actual == -1){
@@ -292,46 +291,9 @@ class GrafoArrays {
         ArrayList<String> camino = new ArrayList<>();
         int actual = destino;
         while(actual != -1){
-            camino.add(0, vertices[actual]);
+            camino.addFirst(vertices[actual]);
             actual = anterior[actual];
         }
         return  "El camino mas corto de " + verticeInicial + " a " + verticeFinal + " es: " + String.join("->", camino);
     }
-}
-
-
-
-public class crearMatrizGrafo {
-
-    public static void main(String[] args) {
-        String texto = cargaArchivo("C:\\Users\\uriel\\Documents\\Fundamentos_3\\fundamentos_3\\Grafos\\grafo_salon");
-        System.out.println("Contenido del archivo:\n" + texto);
-        GrafoArrays grafo = new GrafoArrays(texto);
-        grafo.display();
-        grafo.displayMatrizAdyacencia();
-
-        grafo.DFS("Luna", "Sergio");
-        grafo.BFS("Luna", "Sergio");
-
-        System.out.println("Metodo despliegaArcos");
-        grafo.despliegaArcos();
-
-        //System.out.println(grafo.caminoMasCorto("Luna", "Sergio"));
-    }
-
-    public static String cargaArchivo(String ruta) {
-        String contenido = "";
-        try {
-            java.io.File archivo = new java.io.File(ruta);
-            java.util.Scanner scanner = new java.util.Scanner(archivo);
-            while (scanner.hasNextLine()) {
-                contenido += scanner.nextLine() + "\n";
-            }
-            scanner.close();
-        } catch (java.io.FileNotFoundException e) {
-            System.out.println("Archivo no encontrado: " + ruta);
-        }
-        return contenido;
-    }
-
 }
